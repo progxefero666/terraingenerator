@@ -1,4 +1,4 @@
-import type { ColorRamp } from '@/types';
+import type { ColorRamp } from '@/lib/terraintypes';
 
 /**
  * Parses a hex color string (#RRGGBB) into an [r, g, b] array.

@@ -1,6 +1,6 @@
 "use client";
 
-import type { ColorRamp } from "@/types";
+import type { ColorRamp } from "@/lib/terraintypes";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";

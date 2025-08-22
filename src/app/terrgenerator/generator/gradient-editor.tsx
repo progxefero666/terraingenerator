@@ -1,6 +1,6 @@
 "use client";
 
-import type { Gradient } from "@/types";
+import type { Gradient } from "@/lib/terraintypes";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 

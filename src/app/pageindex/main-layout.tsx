@@ -3,12 +3,12 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import { Gradient, TerrainParams, TextureParams } from "@/types";
+import { Gradient, TerrainParams, TextureParams } from "@/lib/terraintypes";
 import TerrGeneratorSidebar from "@/app/terrgenerator/generator/terrgeneratorbar";
 import TerrTextureEditionbar from "@/app/terrgenerator/edition/texteditionbar";
 
 import MainContent from "@/app/pageindex/main-content";
-import { useToast } from "@/hooks/use-toast";
+import { useToast } from "@/components/hooks/use-toast";
 import { generateGradients as generateGradientsAI } from "@/ai/flows/gradient";
 import { generateTexture as generateTextureAI } from "@/ai/flows/texture";
 import { generateTextureFromHeightmap } from "@/lib/functions/texture-utils";

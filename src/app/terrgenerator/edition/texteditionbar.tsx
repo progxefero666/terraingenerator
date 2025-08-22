@@ -2,7 +2,7 @@
 //src\components\texture-sidebar.tsx
 "use client";
 
-import { TextureParams } from "@/types";
+import { TextureParams } from "@/lib/terraintypes";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";

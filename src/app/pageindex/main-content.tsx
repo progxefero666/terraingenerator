@@ -1,7 +1,7 @@
 
 "use client";
 
-import { Gradient, TerrainParams, TextureParams } from "@/types";
+import { Gradient, TerrainParams, TextureParams } from "@/lib/terraintypes";
 import TerrainControls from "@/app/terrgenerator/generator/terrain-controls";
 import TextureControls from "@/app/terrgenerator/edition/texture-controls";
 import TerrainViewer from "@/app/pageindex/terrain-viewer";

@@ -1,7 +1,7 @@
 
 "use client";
 
-import type { TerrainParams } from "@/types";
+import type { TerrainParams } from "@/lib/terraintypes";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 

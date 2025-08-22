@@ -1,7 +1,7 @@
 //src\components\terrain-sidebar.tsx
 "use client";
 
-import type { Gradient } from "@/types";
+import type { Gradient } from "@/lib/terraintypes";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
