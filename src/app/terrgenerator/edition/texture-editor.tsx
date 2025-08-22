@@ -13,12 +13,12 @@ type TextureEditorProps = {
     scale: number; // e.g., 100 for 100%, 120 for 120%
 };
 
-type ExportFormat = "png" | "jpeg";
+
 
 
 export default function TextureEditor({ baseImage, width, height, scale }: TextureEditorProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [exportFormat, setExportFormat] = useState<ExportFormat>(DocFormats.FORMAT_PNG.value);
+    const [exportFormat, setExportFormat] = useState<string>(DocFormats.FORMAT_PNG.value);
 
 
     useEffect(() => {
@@ -86,10 +86,11 @@ export default function TextureEditor({ baseImage, width, height, scale }: Textu
 
     return (
         <div className="w-full h-full flex flex-col">
+            
             <div className="flex items-center justify-between p-2 text-sm font-medium text-muted-foreground bg-card/80">
                 <h2>Texture Editor</h2>
                 <div className="flex items-center gap-2">
-                    <Select value={exportFormat} onValueChange={(value: ExportFormat) => setExportFormat(value)}>
+                    <Select value={exportFormat} onValueChange={(value: string) => setExportFormat(value)}>
                         <SelectTrigger className="w-[80px] h-8 text-xs">
                             <SelectValue placeholder="Format" />
                         </SelectTrigger>
@@ -101,6 +102,7 @@ export default function TextureEditor({ baseImage, width, height, scale }: Textu
                     <Button onClick={handleExport} size="sm" className="h-8 text-xs">Export</Button>
                 </div>
             </div>
+
             <div className="flex-1 w-full h-full bg-card p-2 flex items-center justify-center">
                 <canvas
                     ref={canvasRef}
