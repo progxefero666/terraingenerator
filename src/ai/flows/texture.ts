@@ -8,19 +8,19 @@
  * - GenerateTextureOutput - The return type for the generateTexture function.
  */
 
-import {ai} from '@/ai/genkit';
-import {z} from 'genkit';
+import { ai } from '@/ai/genkit';
+import { z } from 'genkit';
 import { TEXTURE_GENERATION_PROMPT } from '../prompts/texture-prompt';
 
 const GenerateTextureInputSchema = z.object({
-  prompt: z
-    .string()
-    .describe('A text description of the desired texture, e.g., "A dense forest with palm trees as seen from above."'),
-  imageDataUri: z
-    .string()
-    .describe(
-      "The base image to modify, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
-    ),
+    prompt: z
+        .string()
+        .describe('A text description of the desired texture, e.g., "A dense forest with palm trees as seen from above."'),
+    imageDataUri: z
+        .string()
+        .describe(
+            "The base image to modify, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+        ),
 });
 export type GenerateTextureInput = z.infer<typeof GenerateTextureInputSchema>;
 
@@ -35,30 +35,26 @@ export async function generateTexture(input: GenerateTextureInput): Promise<Gene
 
 
 const generateTextureFlow = ai.defineFlow(
-  {
-    name: 'generateTextureFlow',
-    inputSchema: GenerateTextureInputSchema,
-    outputSchema: GenerateTextureOutputSchema,
-  },
-  async ({ prompt, imageDataUri }) => {
+    {
+        name: 'generateTextureFlow',
+        inputSchema: GenerateTextureInputSchema,
+        outputSchema: GenerateTextureOutputSchema,
+    },
+    async ({ prompt, imageDataUri }) => {
 
-    const fullAIPrompt = TEXTURE_GENERATION_PROMPT.replace('{{prompt}}', prompt);
+        const fullAIPrompt = TEXTURE_GENERATION_PROMPT.replace('{{prompt}}', prompt);
 
-    const { media } = await ai.generate({
-        model: 'googleai/gemini-2.0-flash-preview-image-generation',
-        prompt: [
-            { media: { url: imageDataUri } },
-            { text: fullAIPrompt },
-        ],
-        config: {
-            responseModalities: ['TEXT', 'IMAGE'],
-        },
-    });
-    
-    if (!media.url) {
-        throw new Error('Image generation failed to return an image.');
+        const { media } = await ai.generate({
+            model: 'googleai/gemini-2.0-flash-preview-image-generation',
+            prompt: [
+                { media: { url: imageDataUri } },
+                { text: fullAIPrompt },
+            ],
+            config: {
+                responseModalities: ['TEXT', 'IMAGE'],
+            },
+        });
+
+        return { generatedDataUri: media!.url };
     }
-
-    return { generatedDataUri: media.url };
-  }
 );
