@@ -21,3 +21,19 @@ export const DEFAULT_TEXTURE_PARAMS: TextureParams = {
     },
     scale: 100,
 };
+
+
+/**
+ * class TerrEditionConfig
+ */
+export class TerrEditionConfig {
+    
+    public static SIZE_MIN:number = 512;
+    public static SIZE_MAX:number = 4096;
+    public static SIZE_STEP:number = 256;
+
+    public static SCALE_MIN:number = 100;
+    public static SCALE_MAX:number = 200;
+    public static SCALE_STEP:number = 1;
+
+}//end
