@@ -1,0 +1,1 @@
+export const TEXTURE_GENERATION_PROMPT = `You are provided with an image that serves as a structural mask. The blue areas in this image must remain COMPLETELY UNCHANGED. Replace only the non-blue areas with a photorealistic texture matching the following description: "{{prompt}}".`;
