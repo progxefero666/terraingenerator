@@ -22,6 +22,7 @@ const createDefaultGradients = (): Gradient[] => [
     { id: uuidv4(), type: 'circular', x: 0.5, y: 0.5, radius: 0.25, scaleX: 1, scaleY: 1, rotation: 0, intensity: 0.9 },
 ];
 
+const showAppHeader = true;
 
 export default function MainLayout() {
     const { toast } = useToast();
@@ -34,10 +35,9 @@ export default function MainLayout() {
     const [heightmapData, setHeightmapData] = useState<ImageData | null>(null);
     const [textureBaseData, setTextureBaseData] = useState<ImageData | null>(null);
     const [numGradientsToGenerate, setNumGradientsToGenerate] = useState(1);
+    
     const [activeTab, setActiveTab] = useState('terrain-3d');
 
-    // Control for showing the main application header
-    const showAppHeader = true;
 
     // Create a default texture base image on mount
     useEffect(() => {
@@ -236,8 +236,7 @@ export default function MainLayout() {
                         onRemoveGradient={handleRemoveGradient}
                         onAIGenerate={handleAIGenerateGradients}
                         onRandomize={handleRandomize}
-                        onReset={handleReset}
-                    />
+                        onReset={handleReset}/>
                 );
             case 'texture':
                 return (
@@ -279,8 +278,8 @@ export default function MainLayout() {
                         onHeightmapUpdate={setHeightmapData}
                         onCreateTexture={handleCreateTexture}
                         onApplyTexture={handleApplyTexture}
-                        heightmapResolution={HEIGHMAP_RESOLUTION}
-                    />
+                        heightmapResolution={HEIGHMAP_RESOLUTION}/>
+
                 </main>
             </div>
         </div>

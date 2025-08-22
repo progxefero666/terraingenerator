@@ -1,7 +1,7 @@
 
 "use client";
 
-import type { Gradient, TerrainParams, TextureParams } from "@/types";
+import { Gradient, TerrainParams, TextureParams } from "@/types";
 import TerrainControls from "@/components/controls/terrain-controls";
 import TextureControls from "@/components/controls/texture-controls";
 import TerrainViewer from "@/components/terrain-viewer";
@@ -56,13 +56,15 @@ export default function MainContent({
                     <TabsTrigger value="texture">Texture</TabsTrigger>
                     <TabsTrigger value="advanced">Advanced</TabsTrigger>
                 </TabsList>
+                
+                {/* Terrain 3D */}
                 <TabsContent value="terrain-3d" className="flex-1 overflow-y-auto mt-4">
-                     <div className="flex flex-col items-center justify-start space-y-4">
+
+                    <div className="flex flex-col items-center justify-start space-y-4">
                         <div className="w-full max-w-4xl p-3 border-2 border-primary rounded-lg bg-card/80">
                             <TerrainControls
                                 params={terrainParams}
-                                onParamsChange={onTerrainParamsChange}
-                            />
+                                onParamsChange={onTerrainParamsChange}/>
                         </div>
 
                         <Accordion type="single" collapsible className="w-full max-w-4xl" defaultValue="item-1">
@@ -76,8 +78,7 @@ export default function MainContent({
                                          <TerrainViewer
                                             terrainParams={terrainParams}
                                             heightmapData={heightmapData}
-                                            textureData={heightmapData}
-                                        />
+                                            textureData={heightmapData}/>
                                      </div>
                                 </AccordionContent>
                            </AccordionItem>
@@ -92,11 +93,12 @@ export default function MainContent({
                                 onHeightmapUpdate={onHeightmapUpdate}
                                 onCreateTexture={onCreateTexture}
                                 width={heightmapResolution}
-                                height={heightmapResolution}
-                            />
+                                height={heightmapResolution}/>
                         </div>
                     </div>
                 </TabsContent>
+
+                {/* Texture Tab */}
                 <TabsContent value="texture" className="flex-1 overflow-y-auto mt-4 h-full">
                      <div className="flex flex-col items-center justify-start space-y-4 h-full">
                         <div className="w-full max-w-4xl p-3 border-2 border-primary rounded-lg bg-card/80">
@@ -128,8 +130,7 @@ export default function MainContent({
                             <TerrainViewer
                                 terrainParams={terrainParams}
                                 heightmapData={heightmapData}
-                                textureData={textureBaseData}
-                            />
+                                textureData={textureBaseData}/>
                         </div>
                     </div>
                 </TabsContent>
