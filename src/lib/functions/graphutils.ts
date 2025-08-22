@@ -20,7 +20,7 @@ export function imageDataToDataURI(imageData: ImageData): string {
  * @param dataURI The data URI to convert.
  * @returns A promise that resolves with the new ImageData object.
  */
-function dataURIToImageData(dataURI: string): Promise<ImageData> {
+export function dataURIToImageData(dataURI: string): Promise<ImageData> {
     return new Promise((resolve, reject) => {
         const image = new Image();
         image.onload = () => {

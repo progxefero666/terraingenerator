@@ -3,7 +3,7 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
-import type { Gradient, TerrainParams, TextureParams, ColorRamp } from "@/types";
+import { Gradient, TerrainParams, TextureParams } from "@/types";
 import TerrainSidebar from "@/components/terrain-sidebar";
 import TextureSidebar from "@/components/texture-sidebar";
 
@@ -11,31 +11,12 @@ import MainContent from "@/components/main-content";
 import { useToast } from "@/hooks/use-toast";
 import { generateGradients as generateGradientsAI } from "@/ai/flows/gradient";
 import { generateTexture as generateTextureAI } from "@/ai/flows/texture";
-import { Logo } from "./logo";
 import { generateTextureFromHeightmap } from "@/lib/functions/texture-utils";
-import { imageDataToDataURI } from "@/lib/functions/graphutils";
+import { dataURIToImageData, imageDataToDataURI } from "@/lib/functions/graphutils";
+import { DEFAULT_TERRAIN_PARAMS, DEFAULT_TEXTURE_PARAMS, WATER_COLOR, HEIGHMAP_RESOLUTION } from "@/lib/terrainsconfig";
 
 //import AdvancedSidebar from "@/components/advanced-sidebar";
 
-const HEIGHMAP_RESOLUTION = 500;
-const WATER_COLOR = '#4d8df0'; // A nice blue for water
-
-const DEFAULT_TERRAIN_PARAMS: TerrainParams = {
-    sideLength: 1000,
-    subdivisions: 128,
-    maxHeight: 250,
-};
-
-const DEFAULT_TEXTURE_PARAMS: TextureParams = {
-    sideImage: 512,
-    colorRamp: {
-        start: '#5e4f3f', // Dark brown
-        middle: '#5d7a3e', // Earthy green
-        end: '#d2b48c', // Tan
-        bias: 0.5,
-    },
-    scale: 100,
-};
 
 const createDefaultGradients = (): Gradient[] => [
     { id: uuidv4(), type: 'circular', x: 0.5, y: 0.5, radius: 0.25, scaleX: 1, scaleY: 1, rotation: 0, intensity: 0.9 },
@@ -56,7 +37,7 @@ export default function MainLayout() {
     const [activeTab, setActiveTab] = useState('terrain-3d');
 
     // Control for showing the main application header
-    const showAppHeader = false;
+    const showAppHeader = true;
 
     // Create a default texture base image on mount
     useEffect(() => {
@@ -263,28 +244,19 @@ export default function MainLayout() {
                     <TextureSidebar
                         params={textureParams}
                         onParamsChange={handleTextureParamsChange}
-                        onAIGenerate={handleAIGenerateTexture}
-                    />
+                        onAIGenerate={handleAIGenerateTexture}/>
                 );
             case 'advanced':
             //return <AdvancedSidebar />;
             default:
                 return null;
         }
-    }
+    };
 
     return (
         <div className="flex flex-col w-full min-h-screen bg-background">
             {showAppHeader && (
-                <header className="flex-shrink-0 w-full h-14 px-4 border-b-2 border-border flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                        <Logo className="w-8 h-8 text-accent" />
-                        <h1 className="text-xl font-semibold">TerrainForge</h1>
-                    </div>
-                    <div>
-                        {/* Future application menu can go here */}
-                    </div>
-                </header>
+                <h1 className="text-xl font-semibold">TerrainForge</h1>
             )}
             <div className="flex flex-1 overflow-hidden">
                 <aside className="w-1/4 flex-shrink-0 border-r-2 border-primary flex flex-col">
@@ -314,7 +286,3 @@ export default function MainLayout() {
         </div>
     );
 }
-function dataURIToImageData(generatedDataUri: string) {
-    throw new Error("Function not implemented.");
-}
-
