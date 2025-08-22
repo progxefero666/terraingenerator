@@ -12,12 +12,12 @@ import { Settings } from "lucide-react";
 import { TerrEditionConfig } from "@/lib/terrainsconfig";
 
 
-type TextureSidebarProps = {
+type TerrTextureEditionbarProps = {
     params: TextureParams;
     onParamsChange: (params: Partial<TextureParams>) => void;
 };
 
-export default function TextureSidebar({ params, onParamsChange }: TextureSidebarProps) {
+export default function TerrTextureEditionbar({ params, onParamsChange }: TerrTextureEditionbarProps) {
 
 
     return (

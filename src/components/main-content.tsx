@@ -6,7 +6,7 @@ import TerrainControls from "@/components/controls/terrain-controls";
 import TextureControls from "@/components/controls/texture-controls";
 import TerrainViewer from "@/components/terrain-viewer";
 import HeightmapEditor from "@/components/heightmap-editor";
-import TextureEditor from "@/components/texture-editor";
+import TextureEditor from "@/app/terrgenerator/edition/texture-editor";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ChevronDown } from "lucide-react";

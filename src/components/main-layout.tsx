@@ -4,8 +4,8 @@
 import { useState, useCallback, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { Gradient, TerrainParams, TextureParams } from "@/types";
-import TerrainSidebar from "@/components/terrain-sidebar";
-import TextureSidebar from "@/components/texture-sidebar";
+import TerrGeneratorSidebar from "@/app/terrgenerator/generator/terrgeneratorbar";
+import TerrTextureEditionbar from "@/app/terrgenerator/edition/texteditionbar";
 
 import MainContent from "@/components/main-content";
 import { useToast } from "@/hooks/use-toast";
@@ -225,7 +225,7 @@ export default function MainLayout() {
         switch (activeTab) {
             case 'terrain-3d':
                 return (
-                    <TerrainSidebar
+                    <TerrGeneratorSidebar
                         gradients={gradients}
                         selectedGradientId={selectedGradientId}
                         numGradientsToGenerate={numGradientsToGenerate}
@@ -240,7 +240,7 @@ export default function MainLayout() {
                 );
             case 'texture':
                 return (
-                    <TextureSidebar
+                    <TerrTextureEditionbar
                         params={textureParams}
                         onParamsChange={handleTextureParamsChange}/>
                 );
