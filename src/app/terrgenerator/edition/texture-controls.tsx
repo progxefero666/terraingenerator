@@ -3,7 +3,7 @@
 import type { TextureParams } from "@/lib/terraintypes";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
-import ColorRampSelector from "./color-ramp-selector";
+import ColorRangesSelector from "./color-ramp-selector";
 
 type TextureControlsProps = {
   params: TextureParams;
@@ -19,7 +19,7 @@ export default function TextureControls({ params, onParamsChange, onApplyTexture
   
   return (
     <div className="w-full items-center">
-      <ColorRampSelector
+      <ColorRangesSelector
           colorRamp={params.colorRamp}
           onColorRampChange={handleColorRampChange}
           onApply={onApplyTexture}

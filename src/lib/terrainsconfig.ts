@@ -37,3 +37,9 @@ export class TerrEditionConfig {
     public static SCALE_STEP:number = 1;
 
 }//end
+
+export class TerrImages {
+    
+    public static FORMATS = ['png', 'jpg', 'jpeg'];
+
+}//end

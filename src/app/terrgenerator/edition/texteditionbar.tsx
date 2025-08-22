@@ -44,8 +44,7 @@ export default function TerrTextureEditionbar({ params, onParamsChange }: TerrTe
                         min={TerrEditionConfig.SIZE_MIN}
                         max={TerrEditionConfig.SIZE_MAX}
                         step={TerrEditionConfig.SIZE_STEP}
-                        onValueChange={(value) => onParamsChange({ sideImage: value[0] })}
-                    />
+                        onValueChange={(value) => onParamsChange({ sideImage: value[0] })}/>
 
                     <SliderField
                         id="scale"
@@ -55,8 +54,7 @@ export default function TerrTextureEditionbar({ params, onParamsChange }: TerrTe
                         min={TerrEditionConfig.SCALE_MIN}
                         max={TerrEditionConfig.SCALE_MAX}
                         step={TerrEditionConfig.SCALE_STEP}
-                        onValueChange={(value) => onParamsChange({ scale: value[0] })}
-                    />
+                        onValueChange={(value) => onParamsChange({ scale: value[0] })}/>
 
                 </div>
             </div>

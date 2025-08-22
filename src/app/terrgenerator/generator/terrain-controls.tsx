@@ -2,7 +2,6 @@
 "use client";
 
 import type { TerrainParams } from "@/lib/terraintypes";
-import { Label } from "@/components/ui/label";
 import { SliderField } from "@/components/ui/slider";
 
 type TerrainControlsProps = {
@@ -21,8 +20,7 @@ export default function TerrainControls({ params, onParamsChange }: TerrainContr
         min={100}
         max={2000}
         step={50}
-        onValueChange={(value) => onParamsChange({ sideLength: value[0] })}
-      />
+        onValueChange={(value) => onParamsChange({ sideLength: value[0] })}/>
       <SliderField
         id="subdivisions"
         label="Subdivisions"
@@ -31,8 +29,7 @@ export default function TerrainControls({ params, onParamsChange }: TerrainContr
         min={16}
         max={256}
         step={16}
-        onValueChange={(value) => onParamsChange({ subdivisions: value[0] })}
-      />
+        onValueChange={(value) => onParamsChange({ subdivisions: value[0] })}/>
       <SliderField
         id="maxHeight"
         label="Max Height"
@@ -41,8 +38,7 @@ export default function TerrainControls({ params, onParamsChange }: TerrainContr
         min={50}
         max={1000}
         step={10}
-        onValueChange={(value) => onParamsChange({ maxHeight: value[0] })}
-      />
+        onValueChange={(value) => onParamsChange({ maxHeight: value[0] })}/>
     </div>
   );
 }
