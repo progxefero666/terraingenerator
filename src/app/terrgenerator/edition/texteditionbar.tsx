@@ -5,7 +5,7 @@
 import { TextureParams } from "@/lib/terraintypes";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { SliderField } from "@/components/ui/slider";
 
 
 import { Settings } from "lucide-react";
@@ -36,35 +36,27 @@ export default function TerrTextureEditionbar({ params, onParamsChange }: TerrTe
                 </div>
                 <div className="px-2 pt-0 space-y-4">
 
-                    <div className="space-y-2 pt-2">
-                        <div className="flex justify-between items-center">
-                            <Label htmlFor="sideImage">Side Image</Label>
-                            <span className="text-sm text-muted-foreground w-[25%] text-right">{params.sideImage}px</span>
-                        </div>
-                        <Slider
-                            id="sideImage"
-                            min={TerrEditionConfig.SIZE_MIN}
-                            max={TerrEditionConfig.SIZE_MAX}
-                            step={TerrEditionConfig.SIZE_STEP}
-                            value={[params.sideImage]}
-                            onValueChange={(value) => onParamsChange({ sideImage: value[0] })}/>
-                    </div>
+                    <SliderField
+                        id="sideImage"
+                        label="Side Image"
+                        value={params.sideImage}
+                        valueFormat={v => `${v}px`}
+                        min={TerrEditionConfig.SIZE_MIN}
+                        max={TerrEditionConfig.SIZE_MAX}
+                        step={TerrEditionConfig.SIZE_STEP}
+                        onValueChange={(value) => onParamsChange({ sideImage: value[0] })}
+                    />
 
-                    <div className="space-y-2 pt-2">
-                        <div className="flex justify-between items-center">
-                            <Label htmlFor="scale">Scale</Label>
-                            <span className="text-sm text-muted-foreground w-[25%] text-right">
-                                {params.scale.toFixed(1)}%
-                            </span>
-                        </div>
-                        <Slider
-                            id="scale"
-                            value={[params.scale]}
-                            onValueChange={(value) => onParamsChange({ scale: value[0] })}
-                            min={TerrEditionConfig.SCALE_MIN}
-                            max={TerrEditionConfig.SCALE_MAX}
-                            step={TerrEditionConfig.SCALE_STEP}/>
-                    </div>
+                    <SliderField
+                        id="scale"
+                        label="Scale"
+                        value={params.scale}
+                        valueFormat={v => `${v.toFixed(1)}%`}
+                        min={TerrEditionConfig.SCALE_MIN}
+                        max={TerrEditionConfig.SCALE_MAX}
+                        step={TerrEditionConfig.SCALE_STEP}
+                        onValueChange={(value) => onParamsChange({ scale: value[0] })}
+                    />
 
                 </div>
             </div>

@@ -3,8 +3,7 @@
 
 import type { Gradient } from "@/lib/terraintypes";
 import { Button } from "@/components/ui/button";
-import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { SliderField } from "@/components/ui/slider";
 import { PlusCircle, Settings, Dices, RotateCcw, Table } from "lucide-react";
 
 import GradientList from "./gradient-list";
@@ -30,6 +29,7 @@ export default function TerrGeneratorSidebar(props: TerrGeneratorSidebarProps) {
 
     return (
         <div className="flex flex-col h-full bg-sidebar">
+
             <div className="p-4 border-b-2 border-primary grid grid-cols-2 gap-2">
                 <Button onClick={props.onGenerateGradients}>
                     <PlusCircle />
@@ -56,19 +56,15 @@ export default function TerrGeneratorSidebar(props: TerrGeneratorSidebarProps) {
                     <span>Options</span>
                 </div>
                 <div className="px-2 pt-0 space-y-4">
-                    <div className="space-y-2 pt-2">
-                        <div className="flex justify-between items-center">
-                            <Label htmlFor="numGradients" className="text-sidebar-accent font-medium">Gradients to Generate</Label>
-                            <span className="text-sm text-muted-foreground w-[25%] text-right">{props.numGradientsToGenerate}</span>
-                        </div>
-                        <Slider
-                            id="numGradients"
-                            value={[props.numGradientsToGenerate]}
-                            onValueChange={(value) => props.onNumGradientsToGenerateChange(value[0])}
-                            min={1}
-                            max={10}
-                            step={1}/>
-                    </div>
+                    <SliderField
+                        id="numGradients"
+                        label="Gradients to Generate"
+                        value={props.numGradientsToGenerate}
+                        valueFormat={v => v.toString()}
+                        min={1}
+                        max={10}
+                        step={1}
+                        onValueChange={(value) => props.onNumGradientsToGenerateChange(value[0])}/>
                 </div>
 
                 <div className="text-lg font-semibold px-2 py-3 text-sidebar-primary">Gradients</div>
@@ -81,7 +77,6 @@ export default function TerrGeneratorSidebar(props: TerrGeneratorSidebarProps) {
                 </div>
 
                 <div className="px-2 pt-0 space-y-4">
-
                     {selectedGradient && (
                         <GradientEditor
                             key={selectedGradient.id}

@@ -3,7 +3,7 @@
 import type { ColorRamp } from "@/lib/terraintypes";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Slider } from "@/components/ui/slider";
+import { SliderField } from "@/components/ui/slider";
 
 type ColorRampSelectorProps = {
   colorRamp: ColorRamp;
@@ -62,17 +62,17 @@ export default function ColorRampSelector({ colorRamp, onColorRampChange, onAppl
       
       {/* Bias Slider */}
       <div className="flex-1 flex items-center gap-3">
-          <Label htmlFor="bias" className="text-xs whitespace-nowrap">Color Bias</Label>
-          <Slider 
+          <SliderField
             id="bias"
+            label="Color Bias"
+            value={colorRamp.bias}
+            valueFormat={v => `${(v * 100).toFixed(0)}%`}
             min={0.01}
             max={0.99}
             step={0.01}
-            value={[colorRamp.bias]}
             onValueChange={handleBiasChange}
             className="w-full"
           />
-          <span className="text-xs text-muted-foreground w-10 text-right">{(colorRamp.bias * 100).toFixed(0)}%</span>
       </div>
 
       {/* Apply Button */}
