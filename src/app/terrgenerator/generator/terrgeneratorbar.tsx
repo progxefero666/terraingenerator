@@ -7,8 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { PlusCircle, Settings, Dices, RotateCcw, Table } from "lucide-react";
 
-import GradientList from "../../../components/controls/gradient-list";
-import GradientEditor from "../../../components/controls/gradient-editor";
+import GradientList from "./gradient-list";
+import GradientEditor from "./gradient-editor";
 
 type TerrGeneratorSidebarProps = {
     gradients: Gradient[];
