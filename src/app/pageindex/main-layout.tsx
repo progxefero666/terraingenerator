@@ -1,25 +1,23 @@
-
+//src\app\pageindex\main-layout.tsx
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { Gradient, TerrainParams, TextureParams } from "@/lib/terraintypes";
-import TerrGeneratorSidebar from "@/app/terrgenerator/generator/terrgeneratorbar";
-import TerrTextureEditionbar from "@/app/terrgenerator/edition/texteditionbar";
-
-import MainContent from "@/app/pageindex/main-content";
 import { useToast } from "@/components/hooks/use-toast";
 import { generateTextureFromHeightmap } from "@/lib/functions/texture-utils";
-import { dataURIToImageData, imageDataToDataURI } from "@/lib/functions/graphutils";
-import { DEFAULT_TERRAIN_PARAMS, DEFAULT_TEXTURE_PARAMS, WATER_COLOR, HEIGHMAP_RESOLUTION } from "@/lib/terrainsconfig";
+
+import { DEFAULT_TERRAIN_PARAMS, DEFAULT_TEXTURE_PARAMS, 
+         WATER_COLOR, HEIGHMAP_RESOLUTION } from "@/lib/terrainsconfig";
 import { findSafeRandomPosition } from "@/lib/functions/planeutils";
 
-//import { generateGradients as generateGradientsAI } from "@/ai/flows/gradient";
-//import { generateTexture as generateTextureAI } from "@/ai/flows/texture";
+import TerrGeneratorSidebar from "@/app/terrgenerator/generator/terrgeneratorbar";
+import TerrTextureEditionbar from "@/app/terrgenerator/edition/texteditionbar";
+import MainContent from "@/app/pageindex/main-content";
 
 
 const createDefaultGradients = (): Gradient[] => [
-    { id: uuidv4(), type: 'circular', x: 0.5, y: 0.5, radius: 0.25, scaleX: 1, scaleY: 1, rotation: 0, intensity: 0.9 },
+    { id: uuidv4(), x: 0.5, y: 0.5, radius: 0.25, scaleX: 1, scaleY: 1, rotation: 0, intensity: 0.9 },
 ];
 
 const showAppHeader = true;
@@ -38,7 +36,6 @@ export default function MainLayout() {
     
     const [activeTab, setActiveTab] = useState('terrain-3d');
 
-
     // Create a default texture base image on mount
     useEffect(() => {
         const canvas = document.createElement('canvas');
@@ -53,15 +50,15 @@ export default function MainLayout() {
     }, [textureParams.sideImage]);
 
 
-    const handleTerrainParamsChange = useCallback((params: Partial<TerrainParams>) => {
+    function handleTerrainParamsChange(params: Partial<TerrainParams>) {
         setTerrainParams((prev) => ({ ...prev, ...params }));
-    }, []);
+    }
 
-    const handleTextureParamsChange = useCallback((params: Partial<TextureParams>) => {
+    function handleTextureParamsChange(params: Partial<TextureParams>) {
         setTextureParams((prev) => ({ ...prev, ...params }));
-    }, []);
+    }
 
-    const handleGenerateGradients = useCallback(() => {
+    function handleGenerateGradients() {
         const newGradients: Gradient[] = [];
         for (let i = 0; i < numGradientsToGenerate; i++) {
             const newId = uuidv4();
@@ -70,7 +67,6 @@ export default function MainLayout() {
 
             const newGradient: Gradient = {
                 id: newId,
-                type: 'circular',
                 x,
                 y,
                 radius,
@@ -84,16 +80,15 @@ export default function MainLayout() {
 
         setGradients((prev) => [...prev, ...newGradients]);
         setSelectedGradientId(newGradients[0]?.id || selectedGradientId);
+    }
 
-    }, [numGradientsToGenerate, selectedGradientId]);
-
-    const handleUpdateGradient = useCallback((id: string, updates: Partial<Gradient>) => {
+    function handleUpdateGradient(id: string, updates: Partial<Gradient>) {
         setGradients((prev) =>
             prev.map((g) => (g.id === id ? { ...g, ...updates } : g))
         );
-    }, []);
+    }
 
-    const handleRemoveGradient = useCallback((id: string) => {
+    function handleRemoveGradient(id: string) {
         setGradients(prev => {
             const remaining = prev.filter(g => g.id !== id);
             if (selectedGradientId === id) {
@@ -101,38 +96,14 @@ export default function MainLayout() {
             }
             return remaining;
         });
-    }, [selectedGradientId]);
+    }
 
-    /*
-    const handleAIGenerateGradients = useCallback(async (prompt: string) => {
-        try {
-            const result = await generateGradientsAI({ prompt });
-            const newGradients: Gradient[] = result.map(g => ({ ...g, id: uuidv4() }));
-            setGradients(newGradients);
-            setSelectedGradientId(newGradients[0]?.id || null);
-            toast({
-                title: "AI Generation Successful",
-                description: `Generated ${newGradients.length} new gradients.`,
-            });
-        } catch (error) {
-            console.error("AI generation failed:", error);
-            toast({
-                variant: "destructive",
-                title: "AI Generation Failed",
-                description: "Could not generate gradients. Please try again.",
-            });
-        }
-    }, [toast]);
-    */
     const handleGradientsChange = (newGradients: Gradient[]) => {
         setGradients(newGradients);
     };
 
-    const handleRandomize = useCallback(() => {
-        // Randomize number of gradients to generate
-        setNumGradientsToGenerate(Math.floor(Math.random() * 5) + 1); // 1 to 5
-
-        // Randomize selected gradient's properties, if one is selected
+    function handleRandomize() {
+        setNumGradientsToGenerate(Math.floor(Math.random() * 5) + 1); 
         if (selectedGradientId) {
             const randomUpdates: Partial<Gradient> = {
                 intensity: Math.random(),
@@ -143,14 +114,14 @@ export default function MainLayout() {
             };
             handleUpdateGradient(selectedGradientId, randomUpdates);
         }
-    }, [selectedGradientId, handleUpdateGradient]);
+    }
 
-    const handleCreateTexture = useCallback((imageData: ImageData) => {
+    function handleCreateTexture(imageData: ImageData) {
         setTextureBaseData(imageData);
         setActiveTab('texture');
-    }, []);
+    }
 
-    const handleApplyTexture = useCallback(() => {
+    function handleApplyTexture() {
         if (!heightmapData) {
             toast({
                 variant: "destructive",
@@ -165,10 +136,9 @@ export default function MainLayout() {
             title: "Texture Applied",
             description: "The color ramp has been applied to the texture.",
         });
+    }
 
-    }, [heightmapData, textureParams.colorRamp, toast]);
-
-    const handleReset = useCallback(() => {
+    function handleReset() {
         setTerrainParams(DEFAULT_TERRAIN_PARAMS);
         setTextureParams(DEFAULT_TEXTURE_PARAMS);
         const defaultGradients = createDefaultGradients();
@@ -190,7 +160,7 @@ export default function MainLayout() {
             title: "Application Reset",
             description: "All settings have been reset to their default values.",
         });
-    }, [toast]);
+    }
 
 
     const renderSidebar = () => {

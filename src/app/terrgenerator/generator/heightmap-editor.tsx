@@ -3,11 +3,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { Gradient } from "@/lib/terraintypes";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { SimpleSelect } from "@/components/ui/select";
 import { Palette } from "lucide-react";
-import { DocFormats } from "@/lib/docformats";
 import { exportCanvasImage } from "@/lib/functions/graphutils";
 import { TerrImages } from "@/lib/terrainsconfig";
 
@@ -22,18 +20,12 @@ type HeightmapEditorProps = {
     onCreateTexture: (imageData: ImageData) => void;
 };
 
-type ExportFormat = "png" | "jpeg";
 
 export default function HeightmapEditor({
-    gradients,
-    onGradientsChange,
-    selectedGradientId,
-    onSelectGradient,
-    onHeightmapUpdate,
-    width,
-    height,
-    onCreateTexture,
-}: HeightmapEditorProps) {
+                            gradients,onGradientsChange,
+                            selectedGradientId,onSelectGradient,
+                            onHeightmapUpdate,width,height,onCreateTexture}: HeightmapEditorProps) {
+
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [draggingGradientId, setDraggingGradientId] = useState<string | null>(null);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -113,7 +105,7 @@ export default function HeightmapEditor({
             }
         }
         return null;
-    }
+    };//end
 
     const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>) => {
         const canvas = canvasRef.current;

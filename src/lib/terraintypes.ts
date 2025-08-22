@@ -1,6 +1,6 @@
+
 export type Gradient = {
     id: string;
-    type: 'circular';
     x: number; // 0-1, center
     y: number; // 0-1, center
     radius: number; // 0-1, relative to canvas width

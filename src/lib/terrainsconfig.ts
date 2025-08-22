@@ -1,6 +1,6 @@
 //src\lib\terrainsconfig.ts
 
-import { Gradient, TerrainParams, TextureParams, ColorRamp } from "@/lib/terraintypes";
+import { TerrainParams, TextureParams } from "@/lib/terraintypes";
 
 export const HEIGHMAP_RESOLUTION = 500;
 export const WATER_COLOR = '#4d8df0'; // A nice blue for water
