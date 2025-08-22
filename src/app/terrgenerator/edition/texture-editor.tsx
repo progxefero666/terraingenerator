@@ -4,6 +4,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { DocFormats } from "@/lib/docformats";
 
 type TextureEditorProps = {
     baseImage: ImageData | null;
@@ -17,7 +18,7 @@ type ExportFormat = "png" | "jpeg";
 
 export default function TextureEditor({ baseImage, width, height, scale }: TextureEditorProps) {
     const canvasRef = useRef<HTMLCanvasElement>(null);
-    const [exportFormat, setExportFormat] = useState<ExportFormat>("png");
+    const [exportFormat, setExportFormat] = useState<ExportFormat>(DocFormats.FORMAT_PNG.value);
 
 
     useEffect(() => {

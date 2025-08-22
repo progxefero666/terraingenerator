@@ -18,7 +18,7 @@ export type TKeyvalue = {
 };
 
 /**
- * class DocFormats.getMimetype
+ * class DocFormats.FORMAT_JPG
  */
 export class DocFormats{
     
