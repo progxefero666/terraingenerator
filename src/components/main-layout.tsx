@@ -12,8 +12,8 @@ import { useToast } from "@/hooks/use-toast";
 import { generateGradients as generateGradientsAI } from "@/ai/flows/gradient";
 import { generateTexture as generateTextureAI } from "@/ai/flows/texture";
 import { Logo } from "./logo";
-import { generateTextureFromHeightmap } from "@/lib/texture-utils";
-import { imageDataToDataURI } from "@/lib/graphutils";
+import { generateTextureFromHeightmap } from "@/lib/functions/texture-utils";
+import { imageDataToDataURI } from "@/lib/functions/graphutils";
 
 //import AdvancedSidebar from "@/components/advanced-sidebar";
 
@@ -41,64 +41,6 @@ const createDefaultGradients = (): Gradient[] => [
     { id: uuidv4(), type: 'circular', x: 0.5, y: 0.5, radius: 0.25, scaleX: 1, scaleY: 1, rotation: 0, intensity: 0.9 },
 ];
 
-
-
-
-/**
- * Converts a data URI to an ImageData object.
- * @param dataURI The data URI to convert.
- * @returns A promise that resolves with the new ImageData object.
- */
-function dataURIToImageData(dataURI: string): Promise<ImageData> {
-    return new Promise((resolve, reject) => {
-        const image = new Image();
-        image.onload = () => {
-            const canvas = document.createElement('canvas');
-            canvas.width = image.width;
-            canvas.height = image.height;
-            const ctx = canvas.getContext('2d');
-            if (!ctx) {
-                reject(new Error('Could not get canvas context'));
-                return;
-            }
-            ctx.drawImage(image, 0, 0);
-            resolve(ctx.getImageData(0, 0, image.width, image.height));
-        };
-        image.onerror = (err) => {
-            reject(err);
-        };
-        image.src = dataURI;
-    });
-}
-
-
-/**
- * Finds a safe random position for a circle (gradient) to ensure it fits within the 1x1 canvas.
- * @param radius The radius of the circle.
- * @returns An object containing the safe x and y coordinates.
- */
-const findSafeRandomPosition = (radius: number): { x: number, y: number } => {
-    let x, y;
-    const maxAttempts = 100;
-    let attempts = 0;
-
-    do {
-        x = Math.random();
-        y = Math.random();
-        attempts++;
-        if (attempts > maxAttempts) {
-            console.warn("Could not find a safe position for the gradient after 100 attempts. Placing it at center.");
-            return { x: 0.5, y: 0.5 };
-        }
-    } while (
-        x - radius < 0 ||
-        x + radius > 1 ||
-        y - radius < 0 ||
-        y + radius > 1
-    );
-
-    return { x, y };
-};
 
 export default function MainLayout() {
     const { toast } = useToast();
@@ -258,7 +200,7 @@ export default function MainLayout() {
             const imageDataUri = imageDataToDataURI(textureBaseData);
             const result = await generateTextureAI({ prompt, imageDataUri });
             const newImageData = await dataURIToImageData(result.generatedDataUri);
-            setTextureBaseData(newImageData);
+            setTextureBaseData(newImageData!);
             toast({
                 title: "AI Texture Generation Successful",
                 description: "The AI has generated a new texture.",
@@ -372,3 +314,7 @@ export default function MainLayout() {
         </div>
     );
 }
+function dataURIToImageData(generatedDataUri: string) {
+    throw new Error("Function not implemented.");
+}
+

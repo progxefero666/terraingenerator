@@ -5,7 +5,7 @@ import { useEffect, useRef, useMemo, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import type { TerrainParams } from '@/types';
-import { applyLaplacianSmoothing } from '@/lib/mesh-utils';
+import { applyLaplacianSmoothing } from '@/lib/functions/mesh-utils';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/lib/utils';

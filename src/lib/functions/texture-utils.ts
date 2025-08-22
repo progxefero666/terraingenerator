@@ -6,14 +6,14 @@ import type { ColorRamp } from '@/types';
  * @returns An array of numbers [r, g, b].
  */
 function hexToRgb(hex: string): [number, number, number] {
-  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-  return result
-    ? [
-        parseInt(result[1], 16),
-        parseInt(result[2], 16),
-        parseInt(result[3], 16),
-      ]
-    : [0, 0, 0];
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    return result
+        ? [
+            parseInt(result[1], 16),
+            parseInt(result[2], 16),
+            parseInt(result[3], 16),
+        ]
+        : [0, 0, 0];
 }
 
 /**
@@ -24,14 +24,14 @@ function hexToRgb(hex: string): [number, number, number] {
  * @returns The interpolated color as [r, g, b].
  */
 function lerpColor(
-  color1: [number, number, number],
-  color2: [number, number, number],
-  factor: number
+    color1: [number, number, number],
+    color2: [number, number, number],
+    factor: number
 ): [number, number, number] {
-  const r = color1[0] + factor * (color2[0] - color1[0]);
-  const g = color1[1] + factor * (color2[1] - color1[1]);
-  const b = color1[2] + factor * (color2[2] - color1[2]);
-  return [r, g, b];
+    const r = color1[0] + factor * (color2[0] - color1[0]);
+    const g = color1[1] + factor * (color2[1] - color1[1]);
+    const b = color1[2] + factor * (color2[2] - color1[2]);
+    return [r, g, b];
 }
 
 /**
@@ -53,7 +53,7 @@ function applyCoastalEffect(
 ) {
     const data = imageData.data;
     const isWater = new Array(width * height).fill(false);
-    
+
     // First pass: identify all water pixels
     for (let i = 0; i < data.length; i += 4) {
         if (data[i] === waterColor[0] && data[i + 1] === waterColor[1] && data[i + 2] === waterColor[2]) {
@@ -95,7 +95,7 @@ function applyCoastalEffect(
             if (dist <= distance) {
                 const factor = 1.0 - (dist / distance);
                 const blendedColor = lerpColor(waterColor, landColor, factor * 0.75); // Use 0.75 to make the blend more subtle towards the land
-                
+
                 const pixelIndex = index * 4;
                 newData[pixelIndex] = blendedColor[0];
                 newData[pixelIndex + 1] = blendedColor[1];
@@ -103,7 +103,7 @@ function applyCoastalEffect(
             }
         }
     }
-    
+
     data.set(newData);
 }
 
@@ -116,58 +116,58 @@ function applyCoastalEffect(
  * @returns A new ImageData object representing the colored texture.
  */
 export function generateTextureFromHeightmap(
-  heightmap: ImageData,
-  colorRamp: ColorRamp,
-  waterColorHex: string
+    heightmap: ImageData,
+    colorRamp: ColorRamp,
+    waterColorHex: string
 ): ImageData {
-  const { width, height, data } = heightmap;
-  const textureData = new Uint8ClampedArray(width * height * 4);
+    const { width, height, data } = heightmap;
+    const textureData = new Uint8ClampedArray(width * height * 4);
 
-  const startColor = hexToRgb(colorRamp.start);
-  const middleColor = hexToRgb(colorRamp.middle);
-  const endColor = hexToRgb(colorRamp.end);
-  const waterColor = hexToRgb(waterColorHex);
-  const bias = colorRamp.bias;
+    const startColor = hexToRgb(colorRamp.start);
+    const middleColor = hexToRgb(colorRamp.middle);
+    const endColor = hexToRgb(colorRamp.end);
+    const waterColor = hexToRgb(waterColorHex);
+    const bias = colorRamp.bias;
 
-  for (let i = 0; i < data.length; i += 4) {
-    // Height is stored in the R channel (it's grayscale)
-    const heightValue = data[i];
-    const pixelIndex = i;
+    for (let i = 0; i < data.length; i += 4) {
+        // Height is stored in the R channel (it's grayscale)
+        const heightValue = data[i];
+        const pixelIndex = i;
 
-    // Pure white (255) in the heightmap is the lowest point (water)
-    if (heightValue === 255) {
-      textureData[pixelIndex] = waterColor[0];
-      textureData[pixelIndex + 1] = waterColor[1];
-      textureData[pixelIndex + 2] = waterColor[2];
-      textureData[pixelIndex + 3] = 255;
-    } else {
-      // The heightmap is inverted (0=black=highest, 255=white=lowest)
-      // We normalize it to a 0-1 range where 0 is the start of land and 1 is the highest peak.
-      const normalizedHeight = (254 - heightValue) / 254.0; // Use 254 to prevent full white from being land
+        // Pure white (255) in the heightmap is the lowest point (water)
+        if (heightValue === 255) {
+            textureData[pixelIndex] = waterColor[0];
+            textureData[pixelIndex + 1] = waterColor[1];
+            textureData[pixelIndex + 2] = waterColor[2];
+            textureData[pixelIndex + 3] = 255;
+        } else {
+            // The heightmap is inverted (0=black=highest, 255=white=lowest)
+            // We normalize it to a 0-1 range where 0 is the start of land and 1 is the highest peak.
+            const normalizedHeight = (254 - heightValue) / 254.0; // Use 254 to prevent full white from being land
 
-      let finalColor: [number, number, number];
+            let finalColor: [number, number, number];
 
-      if (normalizedHeight <= bias) {
-        // Interpolate between start and middle
-        const factor = normalizedHeight / bias; // scale 0-bias range to 0-1
-        finalColor = lerpColor(startColor, middleColor, factor);
-      } else {
-        // Interpolate between middle and end
-        const factor = (normalizedHeight - bias) / (1 - bias); // scale bias-1 range to 0-1
-        finalColor = lerpColor(middleColor, endColor, factor);
-      }
-      
-      textureData[pixelIndex] = finalColor[0];
-      textureData[pixelIndex + 1] = finalColor[1];
-      textureData[pixelIndex + 2] = finalColor[2];
-      textureData[pixelIndex + 3] = 255;
+            if (normalizedHeight <= bias) {
+                // Interpolate between start and middle
+                const factor = normalizedHeight / bias; // scale 0-bias range to 0-1
+                finalColor = lerpColor(startColor, middleColor, factor);
+            } else {
+                // Interpolate between middle and end
+                const factor = (normalizedHeight - bias) / (1 - bias); // scale bias-1 range to 0-1
+                finalColor = lerpColor(middleColor, endColor, factor);
+            }
+
+            textureData[pixelIndex] = finalColor[0];
+            textureData[pixelIndex + 1] = finalColor[1];
+            textureData[pixelIndex + 2] = finalColor[2];
+            textureData[pixelIndex + 3] = 255;
+        }
     }
-  }
 
-  const finalImageData = new ImageData(textureData, width, height);
+    const finalImageData = new ImageData(textureData, width, height);
 
-  // Apply the coastal effect
-  applyCoastalEffect(finalImageData, width, height, waterColor, startColor, 8);
+    // Apply the coastal effect
+    applyCoastalEffect(finalImageData, width, height, waterColor, startColor, 8);
 
-  return finalImageData;
+    return finalImageData;
 }
