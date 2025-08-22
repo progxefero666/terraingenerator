@@ -243,7 +243,7 @@ export default function MainLayout() {
                     <TextureSidebar
                         params={textureParams}
                         onParamsChange={handleTextureParamsChange}
-                        onAIGenerate={handleAIGenerateTexture}/>
+                        />
                 );
             case 'advanced':
             //return <AdvancedSidebar />;
