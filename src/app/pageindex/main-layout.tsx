@@ -7,7 +7,7 @@ import { Gradient, TerrainParams, TextureParams } from "@/types";
 import TerrGeneratorSidebar from "@/app/terrgenerator/generator/terrgeneratorbar";
 import TerrTextureEditionbar from "@/app/terrgenerator/edition/texteditionbar";
 
-import MainContent from "@/components/main-content";
+import MainContent from "@/app/pageindex/main-content";
 import { useToast } from "@/hooks/use-toast";
 import { generateGradients as generateGradientsAI } from "@/ai/flows/gradient";
 import { generateTexture as generateTextureAI } from "@/ai/flows/texture";
@@ -167,35 +167,6 @@ export default function MainLayout() {
 
     }, [heightmapData, textureParams.colorRamp, toast]);
 
-    const handleAIGenerateTexture = useCallback(async (prompt: string) => {
-        if (!textureBaseData) {
-            toast({
-                variant: "destructive",
-                title: "No Base Texture",
-                description: "A base texture must exist before generating with AI.",
-            });
-            return;
-        }
-
-        try {
-            const imageDataUri = imageDataToDataURI(textureBaseData);
-            const result = await generateTextureAI({ prompt, imageDataUri });
-            const newImageData = await dataURIToImageData(result.generatedDataUri);
-            setTextureBaseData(newImageData!);
-            toast({
-                title: "AI Texture Generation Successful",
-                description: "The AI has generated a new texture.",
-            });
-        } catch (error) {
-            console.error("AI texture generation failed:", error);
-            toast({
-                variant: "destructive",
-                title: "AI Generation Failed",
-                description: "Could not generate the texture. Please check your API key and try again.",
-            });
-        }
-    }, [textureBaseData, toast]);
-
     const handleReset = useCallback(() => {
         setTerrainParams(DEFAULT_TERRAIN_PARAMS);
         setTextureParams(DEFAULT_TEXTURE_PARAMS);
@@ -245,8 +216,6 @@ export default function MainLayout() {
                         onParamsChange={handleTextureParamsChange}/>
                 );
             case 'advanced':
-            //return <AdvancedSidebar />;
-            default:
                 return null;
         }
     };
@@ -283,4 +252,39 @@ export default function MainLayout() {
             </div>
         </div>
     );
-}
+
+}//end component
+
+
+/*
+
+    const handleAIGenerateTexture = useCallback(async (prompt: string) => {
+        if (!textureBaseData) {
+            toast({
+                variant: "destructive",
+                title: "No Base Texture",
+                description: "A base texture must exist before generating with AI.",
+            });
+            return;
+        }
+
+        try {
+            const imageDataUri = imageDataToDataURI(textureBaseData);
+            const result = await generateTextureAI({ prompt, imageDataUri });
+            const newImageData = await dataURIToImageData(result.generatedDataUri);
+            setTextureBaseData(newImageData!);
+            toast({
+                title: "AI Texture Generation Successful",
+                description: "The AI has generated a new texture.",
+            });
+        } catch (error) {
+            console.error("AI texture generation failed:", error);
+            toast({
+                variant: "destructive",
+                title: "AI Generation Failed",
+                description: "Could not generate the texture. Please check your API key and try again.",
+            });
+        }
+    }, [textureBaseData, toast]);
+
+*/
