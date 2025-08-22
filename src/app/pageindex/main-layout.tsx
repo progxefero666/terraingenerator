@@ -9,13 +9,13 @@ import TerrTextureEditionbar from "@/app/terrgenerator/edition/texteditionbar";
 
 import MainContent from "@/app/pageindex/main-content";
 import { useToast } from "@/components/hooks/use-toast";
-import { generateGradients as generateGradientsAI } from "@/ai/flows/gradient";
-import { generateTexture as generateTextureAI } from "@/ai/flows/texture";
 import { generateTextureFromHeightmap } from "@/lib/functions/texture-utils";
 import { dataURIToImageData, imageDataToDataURI } from "@/lib/functions/graphutils";
 import { DEFAULT_TERRAIN_PARAMS, DEFAULT_TEXTURE_PARAMS, WATER_COLOR, HEIGHMAP_RESOLUTION } from "@/lib/terrainsconfig";
+import { findSafeRandomPosition } from "@/lib/functions/planeutils";
 
-//import AdvancedSidebar from "@/components/advanced-sidebar";
+//import { generateGradients as generateGradientsAI } from "@/ai/flows/gradient";
+//import { generateTexture as generateTextureAI } from "@/ai/flows/texture";
 
 
 const createDefaultGradients = (): Gradient[] => [
@@ -103,6 +103,7 @@ export default function MainLayout() {
         });
     }, [selectedGradientId]);
 
+    /*
     const handleAIGenerateGradients = useCallback(async (prompt: string) => {
         try {
             const result = await generateGradientsAI({ prompt });
@@ -122,7 +123,7 @@ export default function MainLayout() {
             });
         }
     }, [toast]);
-
+    */
     const handleGradientsChange = (newGradients: Gradient[]) => {
         setGradients(newGradients);
     };
@@ -205,7 +206,6 @@ export default function MainLayout() {
                         onUpdateGradient={handleUpdateGradient}
                         onGenerateGradients={handleGenerateGradients}
                         onRemoveGradient={handleRemoveGradient}
-                        onAIGenerate={handleAIGenerateGradients}
                         onRandomize={handleRandomize}
                         onReset={handleReset}/>
                 );

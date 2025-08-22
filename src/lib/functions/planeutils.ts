@@ -6,7 +6,7 @@
  * @param radius The radius of the circle.
  * @returns An object containing the safe x and y coordinates.
  */
-const findSafeRandomPosition = (radius: number): { x: number, y: number } => {
+export const findSafeRandomPosition = (radius: number): { x: number, y: number } => {
     let x, y;
     const maxAttempts = 100;
     let attempts = 0;

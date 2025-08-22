@@ -19,7 +19,6 @@ type TerrGeneratorSidebarProps = {
     onUpdateGradient: (id: string, updates: Partial<Gradient>) => void;
     onGenerateGradients: () => void;
     onRemoveGradient: (id: string) => void;
-    onAIGenerate: (prompt: string) => Promise<void>;
     onRandomize: () => void;
     onReset: () => void;
 };
@@ -51,24 +50,13 @@ export default function TerrGeneratorSidebar(props: TerrGeneratorSidebarProps) {
             </div>
 
             <div className="p-2 flex-1 overflow-y-auto">
-
-                <div className="text-lg font-semibold px-2 py-3 text-sidebar-primary">Gradients</div>
-                <div className="px-0">
-                    <GradientList
-                        gradients={props.gradients}
-                        selectedGradientId={props.selectedGradientId}
-                        onSelectGradient={props.onSelectGradient}
-                        onRemoveGradient={props.onRemoveGradient}/>
-                </div>
-
+                
                 <div className="text-lg font-semibold px-2 py-3 flex items-center gap-2 text-sidebar-primary">
                     <Settings className="w-5 h-5" />
                     <span>Options</span>
                 </div>
-
                 <div className="px-2 pt-0 space-y-4">
                     <div className="space-y-2 pt-2">
-
                         <div className="flex justify-between items-center">
                             <Label htmlFor="numGradients" className="text-sidebar-accent font-medium">Gradients to Generate</Label>
                             <span className="text-sm text-muted-foreground w-[25%] text-right">{props.numGradientsToGenerate}</span>
@@ -80,8 +68,20 @@ export default function TerrGeneratorSidebar(props: TerrGeneratorSidebarProps) {
                             min={1}
                             max={10}
                             step={1}/>
-
                     </div>
+                </div>
+
+                <div className="text-lg font-semibold px-2 py-3 text-sidebar-primary">Gradients</div>
+                <div className="px-0">
+                    <GradientList
+                        gradients={props.gradients}
+                        selectedGradientId={props.selectedGradientId}
+                        onSelectGradient={props.onSelectGradient}
+                        onRemoveGradient={props.onRemoveGradient}/>
+                </div>
+
+                <div className="px-2 pt-0 space-y-4">
+
                     {selectedGradient && (
                         <GradientEditor
                             key={selectedGradient.id}
