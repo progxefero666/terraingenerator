@@ -38,8 +38,12 @@ export class TerrEditionConfig {
 
 }//end
 
+/**
+ * class TerrImages.FORMATS
+ */
 export class TerrImages {
     
     public static FORMATS = ['png', 'jpg', 'jpeg'];
+    public static DEF_FORMAT = TerrImages.FORMATS[0];
 
 }//end

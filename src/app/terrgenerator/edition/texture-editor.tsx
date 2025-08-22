@@ -3,7 +3,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SimpleSelect } from "@/components/ui/select";
 import { DocFormats } from "@/lib/docformats";
 
 type TextureEditorProps = {
@@ -83,24 +83,24 @@ export default function TextureEditor({ baseImage, width, height, scale }: Textu
         document.body.removeChild(link);
     };
 
+    const onValueChange = (value: string) => {
+        setExportFormat(value);
+    };
 
     return (
         <div className="w-full h-full flex flex-col">
             
             <div className="flex items-center justify-between p-2 text-sm font-medium text-muted-foreground bg-card/80">
                 <h2>Texture Editor</h2>
+                
                 <div className="flex items-center gap-2">
-                    <Select value={exportFormat} onValueChange={(value: string) => setExportFormat(value)}>
-                        <SelectTrigger className="w-[80px] h-8 text-xs">
-                            <SelectValue placeholder="Format" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="png">PNG</SelectItem>
-                            <SelectItem value="jpeg">JPG</SelectItem>
-                        </SelectContent>
-                    </Select>
+                    <SimpleSelect
+                        collection={["png", "jpeg"]}
+                        value={exportFormat}
+                        onValueChange={onValueChange}/>
                     <Button onClick={handleExport} size="sm" className="h-8 text-xs">Export</Button>
                 </div>
+
             </div>
 
             <div className="flex-1 w-full h-full bg-card p-2 flex items-center justify-center">
@@ -108,8 +108,7 @@ export default function TextureEditor({ baseImage, width, height, scale }: Textu
                     ref={canvasRef}
                     width={width}
                     height={height}
-                    className="bg-gray-500 rounded-md"
-                />
+                    className="bg-gray-500 rounded-md"/>
             </div>
         </div>
     );

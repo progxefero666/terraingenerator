@@ -1,12 +1,15 @@
+//src\app\terrgenerator\generator\heightmap-editor.tsx
 "use client";
 
-import { useEffect, useRef, useState, useCallback } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Gradient } from "@/lib/terraintypes";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { SimpleSelect } from "@/components/ui/select";
 import { Palette } from "lucide-react";
 import { DocFormats } from "@/lib/docformats";
+import { exportCanvasImage } from "@/lib/functions/graphutils";
+import { TerrImages } from "@/lib/terrainsconfig";
 
 type HeightmapEditorProps = {
     gradients: Gradient[];
@@ -34,9 +37,9 @@ export default function HeightmapEditor({
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const [draggingGradientId, setDraggingGradientId] = useState<string | null>(null);
     const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
-    const [exportFormat, setExportFormat] = useState<ExportFormat>("png");
+    const [exportFormat, setExportFormat] = useState<string>(TerrImages.DEF_FORMAT);
 
-    const drawHeightmap = useCallback(() => {
+    const drawHeightmap = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
         const ctx = canvas.getContext("2d", { willReadFrequently: true });
@@ -85,11 +88,11 @@ export default function HeightmapEditor({
 
         ctx.putImageData(imageData, 0, 0);
         onHeightmapUpdate(ctx.getImageData(0, 0, width, height));
-    }, [gradients, width, height, onHeightmapUpdate]);
+    };
 
     useEffect(() => {
         drawHeightmap();
-    }, [drawHeightmap]);
+    });
 
     const getGradientAtPos = (x: number, y: number) => {
         for (let i = gradients.length - 1; i >= 0; i--) {
@@ -158,36 +161,6 @@ export default function HeightmapEditor({
         setDraggingGradientId(null);
     };
 
-    const handleExport = () => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        // For JPG, we need to redraw on a canvas with a solid background color
-        // because toDataURL will use a transparent background otherwise.
-        const exportCanvas = document.createElement('canvas');
-        exportCanvas.width = width;
-        exportCanvas.height = height;
-        const ctx = exportCanvas.getContext('2d');
-        if (!ctx) return;
-
-        ctx.fillStyle = 'white';
-        ctx.fillRect(0, 0, width, height);
-        ctx.drawImage(canvas, 0, 0);
-        let dataUrl: string = '';
-        if(exportFormat ===DocFormats.FORMAT_JPG.value || exportFormat === DocFormats.FORMAT_JPEG.value) {
-            dataUrl = exportCanvas.toDataURL(`image/${exportFormat}`, 1.0);
-        }
-        else {
-            dataUrl = exportCanvas.toDataURL(`image/${exportFormat}`);
-        }        
-        const link = document.createElement("a");
-        link.href = dataUrl;
-        link.download = `heightmap.${exportFormat}`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-    };
-
     const handleCreateTextureClick = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
@@ -197,6 +170,10 @@ export default function HeightmapEditor({
         onCreateTexture(imageData);
     };
 
+    const onValueChange = (value: string) => {
+        setExportFormat(value);
+    };
+
     return (
         <div className="w-full h-full flex flex-col min-h-[540px]">
             
@@ -204,16 +181,15 @@ export default function HeightmapEditor({
                 <h2>2D Heightmap Editor</h2>
                 <div className="flex items-center gap-2">
 
-                    <Select value={exportFormat} onValueChange={(value: ExportFormat) => setExportFormat(value)}>
-                        <SelectTrigger className="w-[80px] h-8 text-xs">
-                            <SelectValue placeholder="Format" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="png">PNG</SelectItem>
-                            <SelectItem value="jpeg">JPG</SelectItem>
-                        </SelectContent>
-                    </Select>
-                    <Button onClick={handleExport} size="sm" className="h-8 text-xs">Export</Button>
+                    <SimpleSelect
+                        collection={["png", "jpeg"]}
+                        value={exportFormat}
+                        onValueChange={onValueChange}/>
+
+                    <Button onClick={()=>exportCanvasImage(canvasRef.current,width,height,exportFormat)} 
+                            size="sm" className="h-8 text-xs">
+                        Export
+                    </Button>
 
                     <Button onClick={handleCreateTextureClick} size="sm" variant="outline" className="h-8 text-xs">
                         <Palette className="mr-2 h-4 w-4" />
